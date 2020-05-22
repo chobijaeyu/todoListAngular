@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDragSortEvent } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Observable, of } from 'rxjs';
+import { Todo } from 'src/app/models/todo.model';
+import { TodoService } from 'src/app/services/todo.service';
 
 @Component({
   templateUrl: './todo-container.component.html',
@@ -20,9 +23,33 @@ export class TodoContainerComponent implements OnInit {
     'Check e-mail',
     'Walk dog'
   ];
-  constructor() { }
+
+  loading$: Observable<boolean>;
+  todoList$: Observable<Todo[]> = of([])
+
+  constructor(private todoservice: TodoService) {
+    this.todoList$ = todoservice.entities$
+    this.loading$ = todoservice.loading$
+  }
 
   ngOnInit(): void {
+    this.fetchTodo()
+  }
+
+  newTodo(todo: Todo) {
+    this.todoservice.add(todo)
+  }
+
+  fetchTodo() {
+    this.todoservice.getAll()
+  }
+
+  updateTodo(todo: Todo) {
+    this.todoservice.update(todo)
+  }
+
+  deleteTodo(todo: Todo) {
+    this.todoservice.delete(todo)
   }
 
 
@@ -39,7 +66,7 @@ export class TodoContainerComponent implements OnInit {
 
   onSorted(ev: CdkDragDrop<string[]>) {
     console.log(ev)
-    if (ev.previousContainer !== ev.container){
+    if (ev.previousContainer !== ev.container) {
       console.log(ev.item.element.nativeElement.textContent)
     }
   }

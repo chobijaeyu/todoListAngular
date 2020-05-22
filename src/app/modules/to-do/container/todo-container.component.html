@@ -1,0 +1,40 @@
+<div fxLayout="row" fxLayoutAlign="center center" cdkDropListGroup>
+    <div class="example-container">
+        <h2>To do</h2>
+
+        <div cdkDropList id="todo" [cdkDropListData]="todo" class="example-list" (cdkDropListDropped)="drop($event)"
+            (cdkDropListDropped)="onSorted($event)">
+            <ng-container *ngIf="todoList$ |async as todo">
+                <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="example-container">
+        <h2>Done</h2>
+
+        <div cdkDropList id="done" [cdkDropListData]="done" class="example-list" (cdkDropListDropped)="drop($event)"
+            (cdkDropListDropped)="onSorted($event)">
+            <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
+        </div>
+    </div>
+</div>
+
+<div class="formGroup" fxLayout="colunm" fxLayoutAlign="space-between center">
+    <div class="addForm">
+        <mat-form-field>
+            <input matInput placeholder="new todo">
+        </mat-form-field>
+    </div>
+    <div class="editForm">
+        <mat-form-field>
+            <input matInput placeholder="edit todo">
+        </mat-form-field>
+    </div>
+</div>
+
+<div>
+    <span>
+        {{todoList$|async|json}}
+    </span>
+</div>
