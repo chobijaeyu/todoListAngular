@@ -23,6 +23,8 @@ export class TodoFormComponent implements OnInit {
     if (this.todo) {
       this.todoForm.patchValue(this.todo)
     }
+
+    console.log(this.todoForm.controls)
   }
 
   onOK(t: Todo) {

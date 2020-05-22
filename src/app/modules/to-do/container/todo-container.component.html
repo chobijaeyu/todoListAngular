@@ -20,12 +20,14 @@
     </div>
 </div>
 
-<div class="formGroup" fxLayout="colunm" fxLayoutAlign="space-between center">
-    <div class="addForm">
-        <app-todo-form (todoData)="newTodo($event)"></app-todo-form>
+<div class="formGroup" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+    <div class="addForm" fxFill>
+        <app-todo-form (todoData)="newTodo($event)" fxLayout="column center" fxLayoutGap="1rem"></app-todo-form>
     </div>
-    <div class="editForm">
-        <app-todo-form [todo]="selectedTodoItem" (todoData)="updateTodo($event)"></app-todo-form>
+    <div class="editForm" fxFill>
+        <app-todo-form [todo]="selectedTodoItem" (todoData)="updateTodo($event)" *ngIf="selectedTodoItem"
+            fxLayout="column center" fxLayoutGap="1rem">
+        </app-todo-form>
     </div>
 </div>
 

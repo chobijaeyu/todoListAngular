@@ -6,7 +6,7 @@ export class Todo {
     Desc: string
     @prop()
     Img?: string
-    @required()
+    @prop()
     Done: boolean
     @required()
     Deadline: Date

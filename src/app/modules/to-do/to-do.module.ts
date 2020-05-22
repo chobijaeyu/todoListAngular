@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { RxReactiveFormsModule } from "@rxweb/reactive-form-validators"
 
@@ -22,21 +23,20 @@ import { TodoFormComponent } from './todo-form/todo-form.component';
 
 
 @NgModule({
-  declarations: [TodoContainerComponent,TodoFormComponent],
+  declarations: [TodoContainerComponent, TodoFormComponent],
   imports: [
     CommonModule,
     DragDropModule,
+    ReactiveFormsModule,
+    RxReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
     MatIconModule,
     MatCheckboxModule,
     MatButtonModule,
     FlexLayoutModule,
-    RxReactiveFormsModule,
     ToDoRoutingModule,
   ],
-  providers: [
-    TodoService,
-    { provide: DefaultDataServiceConfig, useValue: defaultDataServiceConfig }],
+  providers: [],
 })
 export class ToDoModule { }
