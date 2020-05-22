@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Todo } from 'src/app/models/todo.model';
 import { TodoService } from 'src/app/services/todo.service';
 
@@ -25,15 +25,24 @@ export class TodoContainerComponent implements OnInit {
   ];
 
   loading$: Observable<boolean>;
-  todoList$: Observable<Todo[]> = of([])
+  todoList$: Observable<Todo[]>
 
-  constructor(private todoservice: TodoService) {
+  selectedTodoItem:Todo
+
+  constructor(
+    private todoservice: TodoService,
+  ) {
     this.todoList$ = todoservice.entities$
     this.loading$ = todoservice.loading$
   }
 
   ngOnInit(): void {
     this.fetchTodo()
+
+  }
+
+  onItemClick(t:Todo){
+    this.selectedTodoItem = t
   }
 
   newTodo(todo: Todo) {

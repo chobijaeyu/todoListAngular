@@ -7,6 +7,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -15,15 +18,19 @@ import { TodoContainerComponent } from './container/todo-container.component';
 import { DefaultDataServiceConfig } from '@ngrx/data';
 import { defaultDataServiceConfig } from 'src/app/entity-metadata';
 import { TodoService } from 'src/app/services/todo.service';
+import { TodoFormComponent } from './todo-form/todo-form.component';
 
 
 @NgModule({
-  declarations: [TodoContainerComponent],
+  declarations: [TodoContainerComponent,TodoFormComponent],
   imports: [
     CommonModule,
     DragDropModule,
     MatInputModule,
     MatFormFieldModule,
+    MatIconModule,
+    MatCheckboxModule,
+    MatButtonModule,
     FlexLayoutModule,
     RxReactiveFormsModule,
     ToDoRoutingModule,

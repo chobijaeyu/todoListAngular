@@ -1,7 +1,13 @@
+import { prop, required } from '@rxweb/reactive-form-validators'
 
 export class Todo {
-    ID: string
+    ID?: string
+    @required()
     Desc: string
-    Img: string
+    @prop()
+    Img?: string
+    @required()
+    Done: boolean
+    @required()
     Deadline: Date
 }

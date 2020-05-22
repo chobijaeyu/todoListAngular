@@ -5,7 +5,7 @@
         <div cdkDropList id="todo" [cdkDropListData]="todo" class="example-list" (cdkDropListDropped)="drop($event)"
             (cdkDropListDropped)="onSorted($event)">
             <ng-container *ngIf="todoList$ |async as todo">
-                <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
+                <div class="example-box" *ngFor="let item of todo" (click)="onItemClick(item)" cdkDrag>{{item}}</div>
             </ng-container>
         </div>
     </div>
@@ -15,21 +15,17 @@
 
         <div cdkDropList id="done" [cdkDropListData]="done" class="example-list" (cdkDropListDropped)="drop($event)"
             (cdkDropListDropped)="onSorted($event)">
-            <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
+            <div class="example-box" *ngFor="let item of done" (click)="onItemClick(item)" cdkDrag>{{item}}</div>
         </div>
     </div>
 </div>
 
 <div class="formGroup" fxLayout="colunm" fxLayoutAlign="space-between center">
     <div class="addForm">
-        <mat-form-field>
-            <input matInput placeholder="new todo">
-        </mat-form-field>
+        <app-todo-form (todoData)="newTodo($event)"></app-todo-form>
     </div>
     <div class="editForm">
-        <mat-form-field>
-            <input matInput placeholder="edit todo">
-        </mat-form-field>
+        <app-todo-form [todo]="selectedTodoItem" (todoData)="updateTodo($event)"></app-todo-form>
     </div>
 </div>
 

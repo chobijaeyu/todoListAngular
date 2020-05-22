@@ -1,0 +1,41 @@
+<div class="editForm">
+    <mat-form-field appearance="outline" [hideRequiredMarker]="false">
+        <mat-icon matPrefix></mat-icon>
+        <mat-label>todo</mat-label>
+        <input matInput formControlName='Desc' name='Desc' placeholder="buy milk" required>
+        <mat-error *ngIf="todoForm.controls['Desc'].invalid">
+            {{todoForm.controls['Desc']["errorMessage"]}}
+        </mat-error>
+        <mat-hint></mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="outline" [hideRequiredMarker]="false">
+        <mat-icon matPrefix></mat-icon>
+        <mat-label>img</mat-label>
+        <input matInput formControlName='Img' name='Img' placeholder="link of img">
+        <mat-error *ngIf="todoForm.controls['Img'].invalid">
+            {{todoForm.controls['Img']["errorMessage"]}}
+        </mat-error>
+        <mat-hint></mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="outline" [hideRequiredMarker]="false">
+        <mat-icon matPrefix></mat-icon>
+        <mat-label>deadline</mat-label>
+        <input type="date" matInput formControlName='Deadline' name='Deadline' placeholder="buy milk" required>
+        <mat-error *ngIf="todoForm.controls['Deadline'].invalid">
+            {{todoForm.controls['Deadline']["errorMessage"]}}
+        </mat-error>
+        <mat-hint></mat-hint>
+    </mat-form-field>
+
+    <mat-checkbox formControlName='Done' name='Done'>Check me if done</mat-checkbox>
+
+</div>
+<div class="ok">
+    <button mat-raised-button [disabled]="todoForm.invalid" class="ok-button" color="primary" type="button"
+        (click)="onOK(this.todoForm.value)">OK</button>
+</div>
+<div>
+    <span>
+        {{todoForm.invalid}}
+    </span>
+</div>

@@ -1,8 +1,12 @@
 import { EntityMetadataMap, EntityDataModuleConfig, DefaultDataServiceConfig } from '@ngrx/data';
+import { Todo } from './models/todo.model';
 
 const entityMetadata: EntityMetadataMap = {
-  Todo: {},
+  Todo: {
+    selectId: (todo: Todo) => todo.ID
+  },
 };
+
 
 const pluralNames = { Todo: "Todo" };
 
