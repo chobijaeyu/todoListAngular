@@ -30,15 +30,7 @@
     <mat-checkbox formControlName='Done' name='Done'>Check me if done</mat-checkbox>
 
 </div>
-<div class="ok">
+<div class="ok" fxLayout="row" fxLayoutAlign="center center">
     <button mat-raised-button [disabled]="todoForm.invalid" class="ok-button" color="primary" type="button"
         (click)="onOK(this.todoForm.value)">OK</button>
-</div>
-<div>
-    <span>
-        {{todoForm.invalid}}
-    </span>
-    <span>
-        {{todoForm.value |json}}
-    </span>
 </div>

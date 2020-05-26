@@ -2,20 +2,39 @@
     <div class="example-container">
         <h2>To do</h2>
 
-        <div cdkDropList id="todo" [cdkDropListData]="todo" class="example-list" (cdkDropListDropped)="drop($event)"
-            (cdkDropListDropped)="onSorted($event)">
-            <ng-container *ngIf="todoList$ |async as todo">
-                <div class="example-box" *ngFor="let item of todo" (click)="onItemClick(item)" cdkDrag>{{item}}</div>
-            </ng-container>
+
+        <div cdkDropList id="todo" [cdkDropListData]="todoA | async" class="example-list"
+            (cdkDropListDropped)="drop($event)" (cdkDropListDropped)="onSorted($event)">
+            <div class="example-box" *ngFor="let item of todoA|async" (click)="onItemClick(item)" cdkDrag>
+                <div class="desc">
+                    {{item.Desc}}
+                </div>
+                <div class="deadline">
+                    {{item.Deadline}}
+                </div>
+                <div class="delete" (click)="deleteTodo(item)">
+                    <mat-icon>delete</mat-icon>
+                </div>
+            </div>
         </div>
+
     </div>
 
     <div class="example-container">
         <h2>Done</h2>
-
-        <div cdkDropList id="done" [cdkDropListData]="done" class="example-list" (cdkDropListDropped)="drop($event)"
-            (cdkDropListDropped)="onSorted($event)">
-            <div class="example-box" *ngFor="let item of done" (click)="onItemClick(item)" cdkDrag>{{item}}</div>
+        <div cdkDropList id="done" [cdkDropListData]="doneA | async" class="example-list"
+            (cdkDropListDropped)="drop($event)" (cdkDropListDropped)="onSorted($event)">
+            <div class="example-box" *ngFor="let item of doneA|async" (click)="onItemClick(item)" cdkDrag>
+                <div class="desc">
+                    {{item.Desc}}
+                </div>
+                <div class="deadline">
+                    {{item.Deadline}}
+                </div>
+                <div class="delete" (click)="deleteTodo(item)">
+                    <mat-icon>delete</mat-icon>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -33,6 +52,7 @@
 
 <div>
     <span>
-        {{todoList$|async|json}}
+        {{todoA|async|json}}
+
     </span>
 </div>

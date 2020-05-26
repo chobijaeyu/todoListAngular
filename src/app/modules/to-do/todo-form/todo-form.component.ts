@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { RxFormBuilder } from '@rxweb/reactive-form-validators';
+import { RxFormBuilder, date } from '@rxweb/reactive-form-validators';
 import { Todo } from 'src/app/models/todo.model';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-todo-form',
@@ -23,12 +24,19 @@ export class TodoFormComponent implements OnInit {
     if (this.todo) {
       this.todoForm.patchValue(this.todo)
     }
-
-    console.log(this.todoForm.controls)
   }
 
   onOK(t: Todo) {
     this.todoData.emit(t)
   }
+
+  objectIdFromDate(date) {
+    return Math.floor(date.getTime() / 1000).toString(16) + "0000000000000000";
+  };
+
+
+  dateFromObjectId(objectId) {
+    return new Date(parseInt(objectId.substring(0, 8), 16) * 1000);
+  };
 
 }

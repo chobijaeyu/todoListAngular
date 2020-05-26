@@ -3,7 +3,7 @@ import { Todo } from './models/todo.model';
 
 const entityMetadata: EntityMetadataMap = {
   Todo: {
-    selectId: (todo: Todo) => todo.ID
+    selectId: (todo: Todo) => todo._id
   },
 };
 

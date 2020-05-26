@@ -1,7 +1,7 @@
 import { prop, required } from '@rxweb/reactive-form-validators'
 
 export class Todo {
-    ID?: string
+    _id?: string
     @required()
     Desc: string
     @prop()

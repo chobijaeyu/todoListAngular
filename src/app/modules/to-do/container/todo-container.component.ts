@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { filter, every, defaultIfEmpty, map } from 'rxjs/operators';
 import { Todo } from 'src/app/models/todo.model';
 import { TodoService } from 'src/app/services/todo.service';
 
@@ -9,25 +10,15 @@ import { TodoService } from 'src/app/services/todo.service';
   styleUrls: ['./todo-container.component.sass']
 })
 export class TodoContainerComponent implements OnInit {
-  todo = [
-    'Get to work',
-    'Pick up groceries',
-    'Go home',
-    'Fall asleep'
-  ];
+  todoA: Observable<Todo[]>
 
-  done = [
-    'Get up',
-    'Brush teeth',
-    'Take a shower',
-    'Check e-mail',
-    'Walk dog'
-  ];
+  doneA: Observable<Todo[]>
 
   loading$: Observable<boolean>;
   todoList$: Observable<Todo[]>
+  fiterSub: Subscription
 
-  selectedTodoItem:Todo
+  selectedTodoItem: Todo
 
   constructor(
     private todoservice: TodoService,
@@ -38,10 +29,9 @@ export class TodoContainerComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchTodo()
-
   }
 
-  onItemClick(t:Todo){
+  onItemClick(t: Todo) {
     this.selectedTodoItem = t
   }
 
@@ -50,7 +40,16 @@ export class TodoContainerComponent implements OnInit {
   }
 
   fetchTodo() {
-    this.todoservice.getAll()
+    // this.todoservice.getAll()
+    this.todoservice.getWithQuery({ "query": "Done", "param": "false" })
+    this.todoservice.getWithQuery({ "query": "Done", "param": "true" })
+
+    this.todoA = this.todoservice.selectors$.entities$.pipe(
+      map(e => e.filter(t => !t.Done)),
+    )
+    this.doneA = this.todoservice.selectors$.entities$.pipe(
+      map(e => e.filter(t => t.Done)),
+    )
   }
 
   updateTodo(todo: Todo) {
@@ -65,6 +64,7 @@ export class TodoContainerComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      console.log(event.container.data)
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,
