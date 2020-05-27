@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Observable, Subscription } from 'rxjs';
-import { filter, every, defaultIfEmpty, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Todo } from 'src/app/models/todo.model';
 import { TodoService } from 'src/app/services/todo.service';
 
@@ -11,8 +11,10 @@ import { TodoService } from 'src/app/services/todo.service';
 })
 export class TodoContainerComponent implements OnInit {
   todoA: Observable<Todo[]>
+  todoB: Todo[]
 
   doneA: Observable<Todo[]>
+  doneB: Todo[]
 
   loading$: Observable<boolean>;
   todoList$: Observable<Todo[]>
@@ -33,6 +35,7 @@ export class TodoContainerComponent implements OnInit {
 
   onItemClick(t: Todo) {
     this.selectedTodoItem = t
+    console.log(this.selectedTodoItem)
   }
 
   newTodo(todo: Todo) {
@@ -50,6 +53,12 @@ export class TodoContainerComponent implements OnInit {
     this.doneA = this.todoservice.selectors$.entities$.pipe(
       map(e => e.filter(t => t.Done)),
     )
+    this.todoA.subscribe(t => {
+      this.todoB = t
+    })
+    this.doneA.subscribe(t => {
+      this.doneB = t
+    })
   }
 
   updateTodo(todo: Todo) {
@@ -61,20 +70,22 @@ export class TodoContainerComponent implements OnInit {
   }
 
 
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<Todo[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      console.log(event.container.data)
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex);
+      let t = { ...event.container.data[event.currentIndex] }
+      t.Done = !t.Done
+      console.log(t.Done)
+      this.todoservice.update(t)
     }
   }
 
   onSorted(ev: CdkDragDrop<string[]>) {
-    console.log(ev)
     if (ev.previousContainer !== ev.container) {
       console.log(ev.item.element.nativeElement.textContent)
     }

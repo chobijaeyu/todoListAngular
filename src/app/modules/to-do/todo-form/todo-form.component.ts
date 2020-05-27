@@ -30,13 +30,4 @@ export class TodoFormComponent implements OnInit {
     this.todoData.emit(t)
   }
 
-  objectIdFromDate(date) {
-    return Math.floor(date.getTime() / 1000).toString(16) + "0000000000000000";
-  };
-
-
-  dateFromObjectId(objectId) {
-    return new Date(parseInt(objectId.substring(0, 8), 16) * 1000);
-  };
-
 }

@@ -1,11 +1,10 @@
 <div fxLayout="row" fxLayoutAlign="center center" cdkDropListGroup>
     <div class="example-container">
         <h2>To do</h2>
-
-
-        <div cdkDropList id="todo" [cdkDropListData]="todoA | async" class="example-list"
-            (cdkDropListDropped)="drop($event)" (cdkDropListDropped)="onSorted($event)">
-            <div class="example-box" *ngFor="let item of todoA|async" (click)="onItemClick(item)" cdkDrag>
+        <div cdkDropList id="todo" [cdkDropListData]="todoB" class="example-list" (cdkDropListDropped)="drop($event)"
+            (cdkDropListDropped)="onSorted($event)">
+            <div class="example-box" *ngFor="let item of todoB" (click)="onItemClick(item)" cdkDrag>
+                <img *cdkDragPreview [src]="item.Img" [alt]="item.Desc">
                 <div class="desc">
                     {{item.Desc}}
                 </div>
@@ -15,16 +14,15 @@
                 <div class="delete" (click)="deleteTodo(item)">
                     <mat-icon>delete</mat-icon>
                 </div>
-            </div>
+            </div>
         </div>
-
     </div>
-
     <div class="example-container">
         <h2>Done</h2>
-        <div cdkDropList id="done" [cdkDropListData]="doneA | async" class="example-list"
-            (cdkDropListDropped)="drop($event)" (cdkDropListDropped)="onSorted($event)">
-            <div class="example-box" *ngFor="let item of doneA|async" (click)="onItemClick(item)" cdkDrag>
+        <div cdkDropList id="done" [cdkDropListData]="doneB" class="example-list" (cdkDropListDropped)="drop($event)"
+            (cdkDropListDropped)="onSorted($event)">
+            <div class="example-box" *ngFor="let item of doneB" (click)="onItemClick(item)" cdkDrag>
+                <img *cdkDragPreview [src]="item.Img" [alt]="item.Desc">
                 <div class="desc">
                     {{item.Desc}}
                 </div>
@@ -39,20 +37,15 @@
     </div>
 </div>
 
-<div class="formGroup" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+<div class="formGroup" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
     <div class="addForm" fxFill>
+        <span>add todo</span>
         <app-todo-form (todoData)="newTodo($event)" fxLayout="column center" fxLayoutGap="1rem"></app-todo-form>
     </div>
-    <div class="editForm" fxFill>
-        <app-todo-form [todo]="selectedTodoItem" (todoData)="updateTodo($event)" *ngIf="selectedTodoItem"
+    <div class="editForm" fxFill *ngIf="selectedTodoItem">
+        <span>edit todo</span>
+        <app-todo-form [todo]="selectedTodoItem" (todoData)="updateTodo($event)" 
             fxLayout="column center" fxLayoutGap="1rem">
         </app-todo-form>
     </div>
-</div>
-
-<div>
-    <span>
-        {{todoA|async|json}}
-
-    </span>
 </div>
