@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Observable, Subscription } from 'rxjs';
+import { WebSocketSubject } from "rxjs/webSocket";
 import { map } from 'rxjs/operators';
 import { Todo } from 'src/app/models/todo.model';
 import { TodoService } from 'src/app/services/todo.service';
+import { ChangeEvents, FullDocument } from 'src/app/models/changeEvent.model';
+import { MergeStrategy } from '@ngrx/data';
 
 @Component({
   templateUrl: './todo-container.component.html',
@@ -22,6 +25,8 @@ export class TodoContainerComponent implements OnInit {
 
   selectedTodoItem: Todo
 
+  wsTodoList$: WebSocketSubject<ChangeEvents>
+
   constructor(
     private todoservice: TodoService,
   ) {
@@ -31,6 +36,7 @@ export class TodoContainerComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchTodo()
+    this.ws()
   }
 
   onItemClick(t: Todo) {
@@ -61,12 +67,42 @@ export class TodoContainerComponent implements OnInit {
     })
   }
 
-  updateTodo(todo: Todo) {
-    this.todoservice.update(todo)
+  ws() {
+    this.wsTodoList$ = this.todoservice.wsConnect()
+    this.wsTodoList$.subscribe(r => {
+      let t: Todo = new Todo()
+      console.log(r.operationType)
+      switch (r.operationType) {
+        case "insert":
+          t = new Todo()
+          t = this.bindDocToModel(r.fullDocument)
+          this.todoservice.upsertOneInCache(t)
+          break;
+
+        case "update":
+          t = new Todo()
+          t = this.bindDocToModel(r.fullDocument)
+          this.todoservice.upsertOneInCache(t)
+          break
+        case "delete":
+          let id = r.documentKey._id.$oid
+          console.log(this.todoservice.selectors.selectKeys())
+          // this.todoservice.removeOneFromCache(id)
+          break
+        default:
+          break;
+      }
+    })
   }
 
-  deleteTodo(todo: Todo) {
-    this.todoservice.delete(todo)
+  updateTodo(todo: Todo) {
+    this.todoservice.update(todo)
+    this.selectedTodoItem = null
+  }
+
+  deleteTodo(e: Event, todo: Todo) {
+    e.stopPropagation()
+    this.todoservice.delete(todo, { mergeStrategy: MergeStrategy.IgnoreChanges })
   }
 
 
@@ -89,6 +125,16 @@ export class TodoContainerComponent implements OnInit {
     if (ev.previousContainer !== ev.container) {
       console.log(ev.item.element.nativeElement.textContent)
     }
+  }
+
+  bindDocToModel(doc: FullDocument) {
+    let t: Todo = new Todo()
+    t.Deadline = doc.Deadline
+    t.Desc = doc.Desc
+    t.Done = doc.Done
+    t.Img = doc.Img
+    t._id = doc._id.$oid
+    return t
   }
 
 }

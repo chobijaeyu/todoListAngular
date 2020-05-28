@@ -16,6 +16,6 @@ export const entityConfig: EntityDataModuleConfig = {
 };
 
 export const defaultDataServiceConfig: DefaultDataServiceConfig = {
-  root: 'http://localhost:8080/',
+  root: 'http://localhost:3999/',
   timeout: 3000, // request timeout 
 }

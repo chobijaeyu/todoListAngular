@@ -9,9 +9,9 @@
                     {{item.Desc}}
                 </div>
                 <div class="deadline">
-                    {{item.Deadline}}
+                    {{item.Deadline |date}}
                 </div>
-                <div class="delete" (click)="deleteTodo(item)">
+                <div class="delete" (click)="deleteTodo($event,item)">
                     <mat-icon>delete</mat-icon>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                 <div class="deadline">
                     {{item.Deadline}}
                 </div>
-                <div class="delete" (click)="deleteTodo(item)">
+                <div class="delete" (click)="deleteTodo($event,item)">
                     <mat-icon>delete</mat-icon>
                 </div>
             </div>
@@ -44,8 +44,8 @@
     </div>
     <div class="editForm" fxFill *ngIf="selectedTodoItem">
         <span>edit todo</span>
-        <app-todo-form [todo]="selectedTodoItem" (todoData)="updateTodo($event)" 
-            fxLayout="column center" fxLayoutGap="1rem">
+        <app-todo-form [todo]="selectedTodoItem" (todoData)="updateTodo($event)" fxLayout="column center"
+            fxLayoutGap="1rem">
         </app-todo-form>
     </div>
 </div>
