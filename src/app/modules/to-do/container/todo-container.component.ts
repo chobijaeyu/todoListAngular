@@ -56,7 +56,7 @@ export class TodoContainerComponent implements OnInit {
   deleteTodo(e: Event, todo: Todo) {
     e.stopPropagation()
     console.log(todo)
-    this.todoservice.delete(todo._id)
+    this.todoservice.delete(todo)
   }
 
   fetchTodo() {
@@ -121,7 +121,6 @@ export class TodoContainerComponent implements OnInit {
 
   onSorted(ev: CdkDragDrop<string[]>) {
     if (ev.previousContainer !== ev.container) {
-      console.log(ev.item.element.nativeElement.textContent)
     }
   }
 
