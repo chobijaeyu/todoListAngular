@@ -48,6 +48,17 @@ export class TodoContainerComponent implements OnInit {
     this.todoservice.add(todo)
   }
 
+  updateTodo(todo: Todo) {
+    this.todoservice.update(todo)
+    this.selectedTodoItem = null
+  }
+
+  deleteTodo(e: Event, todo: Todo) {
+    e.stopPropagation()
+    console.log(todo)
+    this.todoservice.delete(todo._id)
+  }
+
   fetchTodo() {
     // this.todoservice.getAll()
     this.todoservice.getWithQuery({ "query": "Done", "param": "false" })
@@ -85,26 +96,13 @@ export class TodoContainerComponent implements OnInit {
           this.todoservice.upsertOneInCache(t)
           break
         case "delete":
-          let id = r.documentKey._id.$oid
-          console.log(this.todoservice.selectors.selectKeys())
-          // this.todoservice.removeOneFromCache(id)
+          this.todoservice.removeOneFromCache(r.documentKey._id.$oid)
           break
         default:
           break;
       }
     })
   }
-
-  updateTodo(todo: Todo) {
-    this.todoservice.update(todo)
-    this.selectedTodoItem = null
-  }
-
-  deleteTodo(e: Event, todo: Todo) {
-    e.stopPropagation()
-    this.todoservice.delete(todo, { mergeStrategy: MergeStrategy.IgnoreChanges })
-  }
-
 
   drop(event: CdkDragDrop<Todo[]>) {
     if (event.previousContainer === event.container) {
