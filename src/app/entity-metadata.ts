@@ -3,7 +3,8 @@ import { Todo } from './models/todo.model';
 
 const entityMetadata: EntityMetadataMap = {
   Todo: {
-    selectId: (todo: Todo) => todo._id
+    selectId: (todo: Todo) => todo._id,
+    noChangeTracking: true
   },
 };
 
@@ -12,10 +13,12 @@ const pluralNames = { Todo: "Todo" };
 
 export const entityConfig: EntityDataModuleConfig = {
   entityMetadata,
-  pluralNames
+  pluralNames,
+
 };
 
 export const defaultDataServiceConfig: DefaultDataServiceConfig = {
   root: 'http://localhost:3999/',
   timeout: 3000, // request timeout 
+
 }
