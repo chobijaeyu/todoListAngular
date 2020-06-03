@@ -28,6 +28,7 @@ export class TodoFormComponent implements OnInit {
 
   onOK(t: Todo) {
     this.todoData.emit(t)
+    this.todoForm.reset()
   }
 
 }

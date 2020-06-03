@@ -9,5 +9,7 @@ backend:https://github.com/chobijaeyu/todoListGin
 
 
 
-here  is 🐛bug when add todo and delete it immediately，
+~~here  is 🐛bug when add todo and delete it immediately，~~
+**bug fixed** add `noChangeTracking: true` to metadata.
+but there still a bug for ngrx/data
 ![normal](./ws102.gif)

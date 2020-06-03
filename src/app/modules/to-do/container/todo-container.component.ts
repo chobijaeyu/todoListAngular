@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Observable, Subscription } from 'rxjs';
 import { WebSocketSubject } from "rxjs/webSocket";
@@ -12,7 +12,7 @@ import { MergeStrategy } from '@ngrx/data';
   templateUrl: './todo-container.component.html',
   styleUrls: ['./todo-container.component.sass']
 })
-export class TodoContainerComponent implements OnInit {
+export class TodoContainerComponent implements OnInit, OnDestroy {
   todoA: Observable<Todo[]>
   todoB: Todo[]
 
@@ -21,7 +21,6 @@ export class TodoContainerComponent implements OnInit {
 
   loading$: Observable<boolean>;
   todoList$: Observable<Todo[]>
-  fiterSub: Subscription
 
   selectedTodoItem: Todo
 
@@ -39,9 +38,12 @@ export class TodoContainerComponent implements OnInit {
     this.ws()
   }
 
+  ngOnDestroy() {
+    this.wsTodoList$.complete()
+  }
+
   onItemClick(t: Todo) {
     this.selectedTodoItem = t
-    console.log(this.selectedTodoItem)
   }
 
   newTodo(todo: Todo) {
@@ -49,14 +51,13 @@ export class TodoContainerComponent implements OnInit {
   }
 
   updateTodo(todo: Todo) {
-    this.todoservice.update(todo)
     this.selectedTodoItem = null
+    this.todoservice.update(todo)
   }
 
   deleteTodo(e: Event, todo: Todo) {
     e.stopPropagation()
-    console.log(todo)
-    this.todoservice.delete(todo)
+    this.todoservice.delete(todo, { mergeStrategy: MergeStrategy.IgnoreChanges })
   }
 
   fetchTodo() {
